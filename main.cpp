@@ -7,11 +7,18 @@ int	main(int argc, char **argv)
 		std::cerr << "Usage: " << argv[0] << " \"polynomial\"" << std::endl;
 		return (1);
 	}
-	std::string			polynomial;
-	PolynomialSolver	polynomialSolver;
+	try
+	{
+		std::string			polynomial;
+		PolynomialSolver	polynomialSolver;
 
-	polynomial = argv[1];
-	polynomialSolver.readPolynomial(polynomial);
-	polynomialSolver.solvePolynomial();
+		polynomial = argv[1];
+		polynomialSolver.readPolynomial(polynomial);
+		polynomialSolver.solvePolynomial();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 	return (0);
 }
