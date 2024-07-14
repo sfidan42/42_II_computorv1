@@ -41,7 +41,11 @@ void	PolynomialSolver::_parse(std::stringstream &ss, bool isRight)
 				coef = -coef;
 			if (neg)
 				coef = -coef;
-			_polynomial[degree] += coef;
+			if (coef)
+			{
+				_polynomial[degree] += coef;
+				std::cout << YELLOW << coef << "x^" << degree << RESET << std::endl;
+			}
 			neg = true;
 		}
 	}
@@ -69,9 +73,9 @@ void	PolynomialSolver::_printReducedForm(void)
 	double				coef;
 	std::vector<double>	coefficients;
 	
-	std::cout << RED << "Reduced form: ";
+	std::cout << GREEN << "Reduced form: ";
 	coefficients = _polynomial.getCoefficients();
-	for (int i = 0, n = coefficients.size(); i <= n; i++)
+	for (int i = 0, n = coefficients.size(); i < n; i++)
 	{
 		coef = coefficients[i];
 		if (coef < 0)
@@ -90,4 +94,9 @@ void	PolynomialSolver::solvePolynomial(void)
 {
 	_parser();
 	_printReducedForm();
+	if (_polynomial.getDegree() > 2)
+	{
+		std::cout << RED << "The polynomial degree is stricly greater than 2, I can't solve." << RESET << std::endl;
+		return ;
+	}
 }
