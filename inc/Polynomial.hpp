@@ -18,4 +18,5 @@ public:
 	size_t				getDegree(void);
 	std::vector<double>	getCoefficients(void);
 	std::vector<double>	getResults(void);
+	void				clearZeroes(void);
 };

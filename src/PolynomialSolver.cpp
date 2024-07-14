@@ -24,9 +24,6 @@ void	PolynomialSolver::_parse(std::stringstream &ss, bool isRight)
 			double				coef;
 			size_t				degree;
 			char				op;
-			std::string			exp_num;
-			std::string 		base;
-			std::string 		exp;
 			char				c;
 
 			if (term.empty())
@@ -36,16 +33,15 @@ void	PolynomialSolver::_parse(std::stringstream &ss, bool isRight)
 			}
 			term_ss.clear();
 			term_ss << term;
-			term_ss >> coef >> op >> c >> c >> degree;
-			if (isRight)
-				coef = -coef;
+			if (!(term_ss >> coef >> op >> c >> c >> degree))
+				continue ;
 			if (neg)
 				coef = -coef;
+			if (isRight)
+				coef = -coef;
 			if (coef)
-			{
 				_polynomial[degree] += coef;
-				std::cout << YELLOW << coef << "x^" << degree << RESET << std::endl;
-			}
+			std::cout << YELLOW << coef << "x^" << degree << RESET << std::endl;
 			neg = true;
 		}
 	}
@@ -63,9 +59,13 @@ void	PolynomialSolver::_parser()
 	std::getline(ss, left, '=');
 	std::getline(ss, right, '=');
 	left_ss << left;
+	right.erase(right.begin());
 	right_ss << right;
+	std::cout << BLUE << "Left:__" << left << "__" << RESET << std::endl;
+	std::cout << BLUE << "Right:__" << right << "__" << RESET << std::endl;
 	_parse(left_ss, false);
 	_parse(right_ss, true);
+	_polynomial.clearZeroes();
 }
 
 void	PolynomialSolver::_printReducedForm(void)
@@ -75,17 +75,24 @@ void	PolynomialSolver::_printReducedForm(void)
 	
 	std::cout << GREEN << "Reduced form: ";
 	coefficients = _polynomial.getCoefficients();
-	for (int i = 0, n = coefficients.size(); i < n; i++)
+	for (size_t i = coefficients.size() - 1; i != (size_t)-1; i--)
 	{
 		coef = coefficients[i];
+		if (coef == 0)
+			continue ;
 		if (coef < 0)
 		{
 			std::cout << " - ";
 			coef = -coef;
 		}
-		else if (i > 0)
+		else
 			std::cout << " + ";
-		std::cout << coef << "x^" << i;
+		if (i == 0)
+			std::cout << coef;
+		else if (i == 1)
+			std::cout << coef << "x";
+		else
+			std::cout << coef << "x^" << i;
 	}
 	std::cout << " = 0 " << RESET << std::endl;
 }
@@ -94,6 +101,7 @@ void	PolynomialSolver::solvePolynomial(void)
 {
 	_parser();
 	_printReducedForm();
+	std::cout << CYAN << "Polynomial degree: " << _polynomial.getDegree() << RESET << std::endl;
 	if (_polynomial.getDegree() > 2)
 	{
 		std::cout << RED << "The polynomial degree is stricly greater than 2, I can't solve." << RESET << std::endl;

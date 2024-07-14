@@ -15,7 +15,13 @@ all: ${NAME}
 	@echo
 	./poly "- 5 * X^0 + 4 * X^1 = - 4 * X^0"
 	@echo
+	./poly "- 5 * X^0 + 4 * X^1 = 4 * X^1"
+	@echo
 	./poly "8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0"
+	@echo
+	./poly "8 * X^0 - 6 * X^1 = - 0 * X^2 - 5.6 * X^3 + 3 * X^0"
+	@echo
+	./poly "8 * X^0 - 6 * X^1 = - 0 * X^2 - 5.6 * X^3 + 3 * X^0"
 	@echo
 
 bin/%.o: src/%.cpp | bin
