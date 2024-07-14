@@ -29,6 +29,11 @@ void	PolynomialSolver::_parse(std::stringstream &ss, bool isRight)
 			std::string 		exp;
 			char				c;
 
+			if (term.empty())
+			{
+				neg = true;
+				continue ;
+			}
 			term_ss.clear();
 			term_ss << term;
 			term_ss >> coef >> op >> c >> c >> degree;
