@@ -1,4 +1,4 @@
-#include "PolynomialSolver.hpp"
+#include <PolynomialSolver.hpp>
 
 void	PolynomialSolver::readPolynomial(std::string &polynomial)
 {

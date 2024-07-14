@@ -1,4 +1,4 @@
-#include "Polynomial.hpp"
+#include <Polynomial.hpp>
 
 double	&Polynomial::operator[](int index)
 {

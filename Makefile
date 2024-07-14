@@ -1,10 +1,32 @@
-all:
-	c++ -Wall -Wextra -Werror -o poly main.cpp Polynomial.cpp PolynomialSolver.cpp
+SRC		=	Polynomial.cpp \
+			PolynomialSolver.cpp
+		
+OBJ		=	$(addprefix bin/, ${SRC:.cpp=.o})
+NAME	=	libcomputorv1.a
+CC		=	c++ -Wall -Wextra -Werror -m64 -g -Iinc
 
-test: all
+all: ${NAME}
 	./poly "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 	./poly "5 * X^0 + 4 * X^1 = 4 * X^0"
 	./poly "8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0"
 
+bin/%.o: src/%.cpp | bin
+	${CC} -c $< -o $@
+
+bin:
+	mkdir bin
+
+${NAME}: ${OBJ}
+	ar rcs ${NAME} ${OBJ}
+	${CC} main.cpp -L. -lcomputorv1 -o poly
+
 clean:
-	rm -f poly
+	rm -f ./poly ${OBJ}
+
+fclean: clean
+	rm -f ${NAME}
+	rm -rf bin
+
+re: fclean all
+
+.PHONY: all clean fclean re
