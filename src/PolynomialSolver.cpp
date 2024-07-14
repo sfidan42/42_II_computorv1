@@ -97,14 +97,80 @@ void	PolynomialSolver::_printReducedForm(void)
 	std::cout << " = 0 " << RESET << std::endl;
 }
 
+void	PolynomialSolver::_solve0(void)
+{
+	if (_polynomial[0] == 0)
+		std::cout << GREEN << "All real numbers are solutions." << RESET << std::endl;
+	else
+		std::cout << GREEN << "There is no solution." << RESET << std::endl;
+}
+
+void	PolynomialSolver::_solve1(void)
+{
+	double	a;
+	double	b;
+
+	a = _polynomial[1];
+	b = _polynomial[0];
+	std::cout << GREEN << "The solution is: " << -b / a << RESET << std::endl;
+}
+
+void	PolynomialSolver::_solve2(void)
+{
+	double	a;
+	double	b;
+	double	c;
+	double	delta;
+	double	x1;
+	double	x2;
+
+	a = _polynomial[2];
+	b = _polynomial[1];
+	c = _polynomial[0];
+	delta = b * b - 4 * a * c;
+	if (delta > 0)
+	{
+		x1 = (-b - sqrt(delta)) / (2 * a);
+		x2 = (-b + sqrt(delta)) / (2 * a);
+		std::cout << GREEN << "Discriminant is strictly positive, the two solutions are: " << x1 << " and " << x2 << RESET << std::endl;
+	}
+	else if (delta == 0)
+	{
+		x1 = -b / (2 * a);
+		std::cout << GREEN << "Discriminant is equal to zero, the solution is: " << x1 << RESET << std::endl;
+	}
+	else
+	{
+		x1 = -b / (2 * a);
+		x2 = sqrt(-delta) / (2 * a);
+		std::cout << GREEN << "Discriminant is strictly negative, the two solutions are: " << x1 << " - i" << x2 << " and " << x1 << " + i" << x2 << RESET << std::endl;
+	}
+
+}
+
+void	PolynomialSolver::_solver(void)
+{
+	std::cout << CYAN << "Polynomial degree: " << _polynomial.getDegree() << RESET << std::endl;
+	switch (_polynomial.getDegree())
+	{
+	case 0:
+		_solve0();
+		break;
+	case 1:
+		_solve1();
+		break;
+	case 2:
+		_solve2();
+		break;
+	default:
+		std::cerr << RED << "The polynomial degree is stricly greater than 2, I can't solve." << RESET << std::endl;
+		break;
+	}
+}
+
 void	PolynomialSolver::solvePolynomial(void)
 {
 	_parser();
 	_printReducedForm();
-	std::cout << CYAN << "Polynomial degree: " << _polynomial.getDegree() << RESET << std::endl;
-	if (_polynomial.getDegree() > 2)
-	{
-		std::cout << RED << "The polynomial degree is stricly greater than 2, I can't solve." << RESET << std::endl;
-		return ;
-	}
+	_solver();
 }
