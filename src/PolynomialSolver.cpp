@@ -128,21 +128,25 @@ void	PolynomialSolver::_solve2(void)
 	b = _polynomial[1];
 	c = _polynomial[0];
 	delta = b * b - 4 * a * c;
+	std::cout << CYAN << BOLD << "Delta: " << delta << RESET << std::endl;
 	if (delta > 0)
 	{
 		x1 = (-b - sqrt(delta)) / (2 * a);
 		x2 = (-b + sqrt(delta)) / (2 * a);
+		std::cout << RED << "x1,2 = (-b +- sqrt(delta)) / (2 * a) " << RESET << std::endl;
 		std::cout << GREEN << "Discriminant is strictly positive, the two solutions are: " << x1 << " and " << x2 << RESET << std::endl;
 	}
 	else if (delta == 0)
 	{
 		x1 = -b / (2 * a);
+		std::cout << RED << "x1,2 = -b / (2 * a) " << std::endl;
 		std::cout << GREEN << "Discriminant is equal to zero, the solution is: " << x1 << RESET << std::endl;
 	}
 	else
 	{
 		x1 = -b / (2 * a);
 		x2 = sqrt(-delta) / (2 * a);
+		std::cout << RED << "x1,2 = -b / (2 * a) +- i * sqrt(-delta) / (2 * a) " << std::endl;
 		std::cout << GREEN << "Discriminant is strictly negative, the two solutions are: " << x1 << " - i" << x2 << " and " << x1 << " + i" << x2 << RESET << std::endl;
 	}
 
