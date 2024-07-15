@@ -152,24 +152,23 @@ void	PolynomialSolver::_solve2(void)
 
 }
 
+typedef void (PolynomialSolver::*solver)(void);
+
 void	PolynomialSolver::_solver(void)
 {
-	std::cout << CYAN << "Polynomial degree: " << _polynomial.getDegree() << RESET << std::endl;
-	switch (_polynomial.getDegree())
-	{
-	case 0:
-		_solve0();
-		break;
-	case 1:
-		_solve1();
-		break;
-	case 2:
-		_solve2();
-		break;
-	default:
-		std::cerr << RED << "The polynomial degree is stricly greater than 2, I can't solve." << RESET << std::endl;
-		break;
-	}
+	size_t	degree;
+	solver	solvers[3];
+	
+	degree = _polynomial.getDegree();
+	std::cout << CYAN << "Polynomial degree: " << degree << RESET << std::endl;
+	solvers[0] = &PolynomialSolver::_solve0;
+	solvers[1] = &PolynomialSolver::_solve1;
+	solvers[2] = &PolynomialSolver::_solve2;
+	if (degree == (size_t)-1)
+		throw std::runtime_error("The polynomial is not valid.");
+	if (degree > 2)
+		throw std::runtime_error("The polynomial degree is stricly greater than 2, I can't solve.");
+	(this->*solvers[degree])();
 }
 
 void	PolynomialSolver::solvePolynomial(void)

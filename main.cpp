@@ -1,4 +1,5 @@
 #include "PolynomialSolver.hpp"
+#include <colors.h>
 
 int	main(int argc, char **argv)
 {
@@ -9,16 +10,15 @@ int	main(int argc, char **argv)
 	}
 	try
 	{
-		std::string			polynomial;
+		std::string			polynomial(argv[1]);
 		PolynomialSolver	polynomialSolver;
 
-		polynomial = argv[1];
 		polynomialSolver.readPolynomial(polynomial);
 		polynomialSolver.solvePolynomial();
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << e.what() << '\n';
+		std::cerr << RED << e.what() << RESET << std::endl;
 	}
 	return (0);
 }

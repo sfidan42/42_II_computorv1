@@ -8,7 +8,6 @@ class PolynomialSolver
 {
 private:
 	Polynomial	_polynomial;
-	bool		_isSolved;
 private:
 	void	_parse(std::stringstream &ss, bool isRight);
 	void	_parser(void);
@@ -20,5 +19,4 @@ private:
 public:
 	void	readPolynomial(std::string &polynomial);
 	void	solvePolynomial(void);
-	void	printSolution(void);
 };

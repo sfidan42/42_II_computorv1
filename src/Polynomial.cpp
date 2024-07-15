@@ -12,11 +12,9 @@ double	&Polynomial::operator[](size_t index)
 void	Polynomial::operator<<(std::string &expression)
 {
 	_coefficients.clear();
-	_results.clear();
 	_expression = expression;
 }
 
-void				Polynomial::addResult(double result) { _results.push_back(result); }
 std::string			Polynomial::getExpression(void) { return (_expression); }
 size_t				Polynomial::getDegree(void) { return (_coefficients.size() - 1); }
 std::vector<double>	Polynomial::getCoefficients(void) { return (_coefficients); }
