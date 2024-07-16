@@ -182,15 +182,53 @@ void	PolynomialSolver::_solver(void)
 	(this->*solvers[degree])();
 }
 
-std::ostream	&operator<<(std::ostream &os, complex &num)
+void printIrrFrac(const double &result)
 {
-	os << num.first;
-	if (-0.00001 < num.second && num.second < 0.00001)
-		return os;
-	if (num.second > 0)
-		os << "+";
-	os << num.second << "i";
-	return os;
+	std::ostringstream	oss;
+	std::string			resultStr;
+	size_t				decimalPos;
+	
+	oss << result;
+	resultStr = oss.str();
+	decimalPos = resultStr.find('.');
+	if (decimalPos != std::string::npos)
+	{
+		std::string wholePart = resultStr.substr(0, decimalPos);
+		std::string decimalPart = resultStr.substr(decimalPos + 1);
+		int numerator = std::stoi(wholePart + decimalPart);
+		int denominator = pow(10, decimalPart.size());
+		int gcd = std::__gcd(numerator, denominator);
+		numerator /= gcd;
+		denominator /= gcd;
+		std::cout << GREEN << numerator << "/" << denominator << RESET;
+	}
+	else
+	{
+		std::cout << resultStr;
+	}
+}
+
+void	PolynomialSolver::_printResults(void)
+{
+	complex_vector	results;
+
+	results = _polynomial.getResults();
+	std::cout << YELLOW << "The solutions are: " << RESET;
+	for (complex result : results)
+	{
+		printIrrFrac(result.first);
+		if (result.second != 0)
+		{
+			if (result.second > 0)
+				std::cout << " + ";
+			else
+				std::cout << " - ";
+			printIrrFrac(result.second);
+			std::cout << "i";
+		}
+		std::cout << " ";
+	}
+	std::cout << std::endl;
 }
 
 void	PolynomialSolver::_checker(void)
@@ -236,6 +274,6 @@ void	PolynomialSolver::solvePolynomial(void)
 	_parser();
 	_printReducedForm();
 	_solver();
-	printResults(_polynomial.getResults());
+	_printResults();
 	_checker();
 }

@@ -1,4 +1,4 @@
-#include <PolynomialSolver.hpp>
+#include <checkTerm.hpp>
 
 std::string ltrim(const std::string &s) {
     std::string result = s;

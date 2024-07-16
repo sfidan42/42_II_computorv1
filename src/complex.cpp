@@ -1,4 +1,15 @@
-#include <PolynomialSolver.hpp>
+#include <complex.hpp>
+
+std::ostream	&operator<<(std::ostream &os, complex &num)
+{
+	os << num.first;
+	if (-0.00001 < num.second && num.second < 0.00001)
+		return os;
+	if (num.second > 0)
+		os << "+";
+	os << num.second << "i";
+	return os;
+}
 
 complex	mult(complex a, complex b)
 {

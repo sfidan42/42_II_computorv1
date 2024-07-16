@@ -1,6 +1,5 @@
-SRC		=	checkTerm.cpp \
-			complex.cpp \
-			printResults.cpp \
+SRC		=	complex.cpp \
+			checkTerm.cpp \
 			Polynomial.cpp \
 			PolynomialSolver.cpp
 
