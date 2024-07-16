@@ -1,6 +1,9 @@
-SRC		=	Polynomial.cpp \
+SRC		=	checkTerm.cpp \
+			complex.cpp \
+			printResults.cpp \
+			Polynomial.cpp \
 			PolynomialSolver.cpp
-		
+
 OBJ		=	$(addprefix bin/, ${SRC:.cpp=.o})
 NAME	=	libcomputorv1.a
 CC		=	c++ -Wall -Wextra -Werror -m64 -g -Iinc
@@ -25,6 +28,15 @@ all: ${NAME}
 	@echo
 	./poly "5 * X^0 = 5 * X^0"
 	@echo
+	./poly "X = 6"
+	@echo
+	./poly "5 = 6 + 4 * X^0 - 9.3 * X^2 + 3X + X - X + X ^2 - 1    X ^  1"
+	@echo
+	./poly "X^2-4=0"
+	@echo
+	./poly "X^2+2=0"
+	@echo
+	./poly "0.5X^2-0.25X+1=0"
 
 bin/%.o: src/%.cpp | bin
 	${CC} -c $< -o $@

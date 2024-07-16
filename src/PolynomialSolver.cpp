@@ -31,6 +31,9 @@ void	PolynomialSolver::_parse(std::stringstream &ss, bool isRight)
 				neg = true;
 				continue ;
 			}
+			std::cout << CYAN << term << " --> " << RESET;
+			term = checkTerm(term);
+			std::cout << CYAN << term << " --> " << RESET;
 			term_ss.clear();
 			term_ss << term;
 			if (!(term_ss >> coef >> op >> c >> c >> degree))
@@ -70,15 +73,17 @@ void	PolynomialSolver::_parser()
 
 void	PolynomialSolver::_printReducedForm(void)
 {
+	size_t				degree;
 	double				coef;
 	std::vector<double>	coefficients;
 	
 	std::cout << GREEN << "Reduced form: ";
+	degree = _polynomial.getDegree();
 	coefficients = _polynomial.getCoefficients();
-	for (size_t i = coefficients.size() - 1; i != (size_t)-1; i--)
+	for (size_t i = degree; i != (size_t)-1; i--)
 	{
 		coef = coefficients[i];
-		if (coef == 0)
+		if (coef == 0 && i != 0)
 			continue ;
 		if (coef < 0)
 		{
@@ -103,6 +108,7 @@ void	PolynomialSolver::_solve0(void)
 		std::cout << GREEN << "All real numbers are solutions." << RESET << std::endl;
 	else
 		std::cout << GREEN << "There is no solution." << RESET << std::endl;
+	std::cout << GREEN << "No need to check solutions" << RESET << std::endl;
 }
 
 void	PolynomialSolver::_solve1(void)
@@ -112,6 +118,7 @@ void	PolynomialSolver::_solve1(void)
 
 	a = _polynomial[1];
 	b = _polynomial[0];
+	_polynomial.addResult(-b / a);
 	std::cout << GREEN << "The solution is: " << -b / a << RESET << std::endl;
 }
 
@@ -133,12 +140,15 @@ void	PolynomialSolver::_solve2(void)
 	{
 		x1 = (-b - sqrt(delta)) / (2 * a);
 		x2 = (-b + sqrt(delta)) / (2 * a);
+		_polynomial.addResult(x1);
+		_polynomial.addResult(x2);
 		std::cout << RED << "x1,2 = (-b +- sqrt(delta)) / (2 * a) " << RESET << std::endl;
 		std::cout << GREEN << "Discriminant is strictly positive, the two solutions are: " << x1 << " and " << x2 << RESET << std::endl;
 	}
 	else if (delta == 0)
 	{
 		x1 = -b / (2 * a);
+		_polynomial.addResult(x1);
 		std::cout << RED << "x1,2 = -b / (2 * a) " << std::endl;
 		std::cout << GREEN << "Discriminant is equal to zero, the solution is: " << x1 << RESET << std::endl;
 	}
@@ -146,10 +156,11 @@ void	PolynomialSolver::_solve2(void)
 	{
 		x1 = -b / (2 * a);
 		x2 = sqrt(-delta) / (2 * a);
+		_polynomial.addResult(x1, x2);
+		_polynomial.addResult(x1, -x2);
 		std::cout << RED << "x1,2 = -b / (2 * a) +- i * sqrt(-delta) / (2 * a) " << std::endl;
 		std::cout << GREEN << "Discriminant is strictly negative, the two solutions are: " << x1 << " - i" << x2 << " and " << x1 << " + i" << x2 << RESET << std::endl;
 	}
-
 }
 
 typedef void (PolynomialSolver::*solver)(void);
@@ -165,10 +176,59 @@ void	PolynomialSolver::_solver(void)
 	solvers[1] = &PolynomialSolver::_solve1;
 	solvers[2] = &PolynomialSolver::_solve2;
 	if (degree == (size_t)-1)
-		throw std::runtime_error("The polynomial is not valid.");
+		_polynomial[0] = 0;
 	if (degree > 2)
 		throw std::runtime_error("The polynomial degree is stricly greater than 2, I can't solve.");
 	(this->*solvers[degree])();
+}
+
+std::ostream	&operator<<(std::ostream &os, complex &num)
+{
+	os << num.first;
+	if (-0.00001 < num.second && num.second < 0.00001)
+		return os;
+	if (num.second > 0)
+		os << "+";
+	os << num.second << "i";
+	return os;
+}
+
+void	PolynomialSolver::_checker(void)
+{
+	complex				ans;
+	std::vector<double>	coefficients;
+	complex_vector		results;
+
+	coefficients = _polynomial.getCoefficients();
+	results = _polynomial.getResults();
+	for (complex result : results)
+	{
+		std::cout << BLUE << "solve for: " << result.first << " + " << result.second << "i" << RESET << std::endl;
+		ans = {0, 0};
+		complex	num = {1, 0};
+		complex term;
+		for (double coef : coefficients)
+		{
+			if (coef)
+			{
+				term = mult(num, {coef, 0});
+				std::cout << YELLOW << "term: " << coef << " * (" << num << ") = " << term << RESET << std::endl;
+				ans = add(ans, term);
+			}
+			num = mult(num, result);
+		}
+		if (-0.00001 < ans.first && ans.first < 0.00001)
+			ans.first = 0;
+		if (-0.00001 < ans.second && ans.second < 0.00001)
+			ans.second = 0;
+		std::cout << MAGENTA << "sum of these: " << ans << RESET << std::endl;
+		if (-0.000001 < ans.first && ans.first < 0.000001 && -0.000001 < ans.second && ans.second < 0.000001)
+		{
+			std::cout << GREEN << "The solution is correct." << RESET << std::endl;
+			continue ;
+		}
+		throw std::runtime_error("The solution is not correct.");
+	}
 }
 
 void	PolynomialSolver::solvePolynomial(void)
@@ -176,4 +236,6 @@ void	PolynomialSolver::solvePolynomial(void)
 	_parser();
 	_printReducedForm();
 	_solver();
+	printResults(_polynomial.getResults());
+	_checker();
 }

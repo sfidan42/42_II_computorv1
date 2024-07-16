@@ -3,6 +3,14 @@
 # include <sstream>
 # include <iostream>
 # include <math.h>
+# include <algorithm>
+
+typedef std::pair<double, double>	complex;
+
+std::string	checkTerm(std::string &term);
+void		printResults(const complex_vector &results);
+complex		add(complex a, complex b);
+complex		mult(complex a, complex b);
 
 class PolynomialSolver
 {
@@ -16,6 +24,7 @@ private:
 	void	_solve1(void);
 	void	_solve2(void);
 	void	_solver(void);
+	void	_checker(void);
 public:
 	void	readPolynomial(std::string &polynomial);
 	void	solvePolynomial(void);
