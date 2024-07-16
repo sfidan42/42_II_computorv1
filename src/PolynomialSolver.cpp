@@ -61,9 +61,10 @@ void	PolynomialSolver::_parser()
 	ss << _polynomial.getExpression();
 	std::getline(ss, left, '=');
 	std::getline(ss, right, '=');
-	left_ss << left;
-	right.erase(right.begin());
-	right_ss << right;
+	left_ss << trim(left);
+	right_ss << trim(right);
+	if (left.empty() || right.empty())
+		throw std::runtime_error("Invalid expression:__" + _polynomial.getExpression() + "__");
 	std::cout << BLUE << "Left:__" << left << "__" << RESET << std::endl;
 	std::cout << BLUE << "Right:__" << right << "__" << RESET << std::endl;
 	_parse(left_ss, false);
@@ -176,7 +177,7 @@ void	PolynomialSolver::_solver(void)
 	solvers[1] = &PolynomialSolver::_solve1;
 	solvers[2] = &PolynomialSolver::_solve2;
 	if (degree == (size_t)-1)
-		_polynomial[0] = 0;
+		throw std::runtime_error("The polynomial degree is strictly negative, I can't solve.");
 	if (degree > 2)
 		throw std::runtime_error("The polynomial degree is stricly greater than 2, I can't solve.");
 	(this->*solvers[degree])();
@@ -271,6 +272,8 @@ void	PolynomialSolver::_checker(void)
 
 void	PolynomialSolver::solvePolynomial(void)
 {
+	if (_polynomial.getExpression().find("=") == std::string::npos)
+		throw std::runtime_error("Invalid expression:__" + _polynomial.getExpression() + "__");
 	_parser();
 	_printReducedForm();
 	_solver();

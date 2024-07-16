@@ -24,12 +24,25 @@ void	Polynomial::clearZeroes(void)
 {
 	size_t	i;
 
-	i = _coefficients.size();
-	while (--i)
+	while (true)
 	{
+		i = _coefficients.size() - 1;
+		if (i == (size_t)-1)
+			return ;
 		if (-0.0000001 < _coefficients[i] && _coefficients[i] < 0.0000001)
 			_coefficients.pop_back();
 		else
 			break ;
+	}
+	i = this->getDegree();
+	if (!(0 < i && i <= 3))
+		return ;
+	while (true)
+	{
+		if (-0.0000001 < _coefficients[0] && _coefficients[0] < 0.0000001)
+			_coefficients.erase(_coefficients.begin());
+		else
+			break ;
+		std::cout << "the polynomial is divided by X. So X = 0 is a solution." << std::endl;
 	}
 }
