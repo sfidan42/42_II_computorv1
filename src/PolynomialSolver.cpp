@@ -123,6 +123,20 @@ void	PolynomialSolver::_solve1(void)
 	std::cout << GREEN << "The solution is: " << -b / a << RESET << std::endl;
 }
 
+double	sqrt(double x)
+{
+	double	epsilon = 0.0000001;
+	double	s;
+	double	s1 = x;
+
+	do
+	{
+		s = s1;
+		s1 = (s + x / s) / 2;
+	} while (s - s1 > epsilon || s - s1 < -epsilon);
+	return s;
+}
+
 void	PolynomialSolver::_solve2(void)
 {
 	double	a;
@@ -172,7 +186,10 @@ void	PolynomialSolver::_solver(void)
 	solver	solvers[3];
 	
 	degree = _polynomial.getDegree();
-	std::cout << CYAN << "Polynomial degree: " << degree << RESET << std::endl;
+	if (degree == (size_t)-1)
+		std::cout << CYAN << "Polynomial degree: -1" << RESET << std::endl;
+	else
+		std::cout << CYAN << "Polynomial degree: " << degree << RESET << std::endl;
 	solvers[0] = &PolynomialSolver::_solve0;
 	solvers[1] = &PolynomialSolver::_solve1;
 	solvers[2] = &PolynomialSolver::_solve2;
@@ -181,6 +198,15 @@ void	PolynomialSolver::_solver(void)
 	if (degree > 2)
 		throw std::runtime_error("The polynomial degree is stricly greater than 2, I can't solve.");
 	(this->*solvers[degree])();
+}
+
+int pow(int base, int exp)
+{
+	int result = 1;
+	
+	for (int i = 0; i < exp; i++)
+		result *= base;
+	return result;
 }
 
 void printIrrFrac(const double &result)

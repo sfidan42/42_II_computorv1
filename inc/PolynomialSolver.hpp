@@ -4,7 +4,6 @@
 # include <Polynomial.hpp>
 # include <sstream>
 # include <iostream>
-# include <math.h>
 
 class PolynomialSolver
 {

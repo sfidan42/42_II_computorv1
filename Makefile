@@ -67,7 +67,7 @@ bin:
 
 ${NAME}: ${OBJ} main.cpp
 	ar rcs ${NAME} ${OBJ}
-	${CC} main.cpp -L. -lcomputorv1 -lm -o poly
+	${CC} main.cpp -L. -lcomputorv1 -o poly
 
 clean:
 	rm -f ./poly ${OBJ}
