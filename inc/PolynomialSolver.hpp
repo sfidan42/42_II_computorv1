@@ -2,6 +2,7 @@
 # include <checkTerm.hpp>
 # include <complex.hpp>
 # include <Polynomial.hpp>
+# include <myMath.h>
 # include <sstream>
 # include <iostream>
 

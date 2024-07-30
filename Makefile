@@ -1,7 +1,8 @@
 SRC		=	complex.cpp \
 			checkTerm.cpp \
 			Polynomial.cpp \
-			PolynomialSolver.cpp
+			PolynomialSolver.cpp \
+			myMath.cpp
 
 OBJ		=	$(addprefix bin/, ${SRC:.cpp=.o})
 NAME	=	libcomputorv1.a
