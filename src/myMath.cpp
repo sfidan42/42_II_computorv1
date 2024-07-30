@@ -1,3 +1,5 @@
+#include <iostream>
+
 static
 double notEqual(double n1, double n2)
 {
@@ -17,11 +19,15 @@ double	sqrt(double x)
 	double	x_n;
 	double	x_n1 = x;
 
+	std::cout << "Solving sqrt(" << x << ")" << std::endl;
+	std::cout << "Initial guess: " << x_n1 << std::endl;
 	do
 	{
 		x_n = x_n1;
 		x_n1 = (x_n + x / x_n) / 2;
+		std::cout << "Current guess: " << x_n1 << std::endl;
 	}	while (notEqual(x_n, x_n1));
+	std::cout << "Final guess: " << x_n1 << std::endl;
 	return x_n;
 }
 
