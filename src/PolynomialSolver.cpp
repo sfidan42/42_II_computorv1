@@ -139,8 +139,9 @@ void	PolynomialSolver::_solve2(void)
 	std::cout << CYAN << BOLD << "Delta: " << delta << RESET << std::endl;
 	if (delta > 0)
 	{
-		x1 = (-b - sqrt(delta)) / (2 * a);
-		x2 = (-b + sqrt(delta)) / (2 * a);
+		double sqrtDelta = sqrt(delta);
+		x1 = (-b - sqrtDelta) / (2 * a);
+		x2 = (-b + sqrtDelta) / (2 * a);
 		_polynomial.addResult(x1);
 		_polynomial.addResult(x2);
 		std::cout << RED << "x1,2 = (-b +- sqrt(delta)) / (2 * a) " << RESET << std::endl;
@@ -172,15 +173,10 @@ void	PolynomialSolver::_solver(void)
 	solver	solvers[3];
 	
 	degree = _polynomial.getDegree();
-	if (degree == (size_t)-1)
-		std::cout << CYAN << "Polynomial degree: -1" << RESET << std::endl;
-	else
-		std::cout << CYAN << "Polynomial degree: " << degree << RESET << std::endl;
+	std::cout << CYAN << "Polynomial degree: " << degree << RESET << std::endl;
 	solvers[0] = &PolynomialSolver::_solve0;
 	solvers[1] = &PolynomialSolver::_solve1;
 	solvers[2] = &PolynomialSolver::_solve2;
-	if (degree == (size_t)-1)
-		throw std::runtime_error("The polynomial degree is strictly negative, I can't solve.");
 	if (degree > 2)
 		throw std::runtime_error("The polynomial degree is stricly greater than 2, I can't solve.");
 	(this->*solvers[degree])();

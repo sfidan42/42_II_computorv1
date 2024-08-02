@@ -8,7 +8,9 @@ OBJ		=	$(addprefix bin/, ${SRC:.cpp=.o})
 NAME	=	libcomputorv1.a
 CC		=	c++ -Wall -Wextra -Werror -m64 -g -Iinc
 
-all: ${NAME}
+all: ${NAME} test
+
+test: ${NAME}
 	@echo "---------------01-------------------"
 	./poly "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
 	@echo "---------------02-------------------"
@@ -79,4 +81,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
